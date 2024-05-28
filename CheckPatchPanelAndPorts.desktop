@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=CheckPatchPanelAndPorts
+Exec=/usr/local/bin/CheckPatchPanelAndPorts
+Type=Application
+Categories=Utility;
+Icon=/usr/local/share/CheckPatchPanelsAndPorts/resources/assets/PatchPanel.jpg
+Comment=Application to check Patch Panels and Ports for Telenord.
+Terminal=false
+StartupNotify=true

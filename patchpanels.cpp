@@ -43,18 +43,18 @@ PatchPanels::PatchPanels(QString name, std::map<int, int> portsPerPatchPanel, QW
         column = 0;
         for (int i {}; i < ports; ++i) {
             auto *nPort = new QCheckBox(QString(tr("Puerto %1").arg(QString::number(i + 1))), this);
-            nPort->setStyleSheet("QCheckBox::checked { color: #00ff00; } QCheckBox::unchecked { color: white; }");
+            nPort->setStyleSheet("QCheckBox::checked { color: #00ff00; }");
             nPort->setToolTip(tr("Por favor, márcalo si pudiste verificarlo."));
 
             auto *nIsAnAP = new QCheckBox(QString(tr("¿Es un AP?")));
-            nIsAnAP->setStyleSheet("QCheckBox::checked { color: #00ffff; } QCheckBox::unchecked { color: white; }");
+            nIsAnAP->setStyleSheet("QCheckBox::checked { color: #00ffff; }");
             nIsAnAP->setToolTip(
                 tr("%1: Márcalo si en este puerto está instalado un AP, si sólo es una toma de datos, déjalo desmarcado.")
                     .arg(nPort->text())
             );
 
             auto *nIsACamera = new QCheckBox(QString(tr("¿Es una cámara?")));
-            nIsACamera->setStyleSheet("QCheckBox::checked { color: #e69138; } QCheckBox::unchecked { color: white; }");
+            nIsACamera->setStyleSheet("QCheckBox::checked { color: #e69138; }");
             nIsACamera->setToolTip(
                 tr("%1: Márcalo si en este puerto está instalada una cámara, si sólo es una toma de datos, déjalo desmarcado.")
                     .arg(nPort->text())

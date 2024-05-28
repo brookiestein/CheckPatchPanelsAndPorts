@@ -72,6 +72,14 @@ install(TARGETS CheckPatchPanelAndPorts
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
+install(FILES CheckPatchPanelAndPorts.desktop
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications
+)
+
+install(DIRECTORY resources
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/share/CheckPatchPanelsAndPorts
+)
+
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(CheckPatchPanelAndPorts)
 endif()
