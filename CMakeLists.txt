@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(CheckPatchPanelAndPorts VERSION 0.1 LANGUAGES CXX)
+project(CheckPatchPanelAndPorts VERSION 1.0 LANGUAGES CXX)
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
@@ -15,14 +15,16 @@ find_package(PkgConfig REQUIRED)
 pkg_check_modules(Xlsxwriter REQUIRED IMPORTED_TARGET xlsxwriter)
 
 set(PROJECT_SOURCES
-        main.cpp
-        mainwindow.cpp
-        mainwindow.hpp
-        mainwindow.ui
-        patchpanels.cpp
-        patchpanels.hpp
-        patchpanels.ui
+    main.cpp
+    mainwindow.hpp
+    mainwindow.cpp
+    mainwindow.ui
+    patchpanels.hpp
+    patchpanels.cpp
+    patchpanels.ui
 )
+
+list(TRANSFORM PROJECT_SOURCES PREPEND "src/")
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(CheckPatchPanelAndPorts
@@ -43,7 +45,6 @@ else()
     else()
         add_executable(CheckPatchPanelAndPorts
             ${PROJECT_SOURCES}
-            patchpanels.hpp patchpanels.cpp patchpanels.ui
         )
     endif()
 endif()
