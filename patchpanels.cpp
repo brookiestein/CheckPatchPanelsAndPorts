@@ -23,7 +23,7 @@ PatchPanels::PatchPanels(QString name, std::map<int, int> portsPerPatchPanel, QW
 
     auto *layout = new QVBoxLayout(this);
     auto *firstWidget = new QWidget(this);
-    auto *button = new QPushButton(tr("Confirmar"));
+    auto *button = new QPushButton(tr("Confirmar"), this);
     button->setToolTip(tr("Pulsa aquí para verificar rápidamente si todos los puertos fueron verificados."));
     connect(button, &QPushButton::clicked, this, &PatchPanels::onConfirmButtonClicked);
 
@@ -46,14 +46,14 @@ PatchPanels::PatchPanels(QString name, std::map<int, int> portsPerPatchPanel, QW
             nPort->setStyleSheet("QCheckBox::checked { color: #00ff00; }");
             nPort->setToolTip(tr("Por favor, márcalo si pudiste verificarlo."));
 
-            auto *nIsAnAP = new QCheckBox(QString(tr("¿Es un AP?")));
+            auto *nIsAnAP = new QCheckBox(QString(tr("¿Es un AP?")), this);
             nIsAnAP->setStyleSheet("QCheckBox::checked { color: #00ffff; }");
             nIsAnAP->setToolTip(
                 tr("%1: Márcalo si en este puerto está instalado un AP, si sólo es una toma de datos, déjalo desmarcado.")
                     .arg(nPort->text())
             );
 
-            auto *nIsACamera = new QCheckBox(QString(tr("¿Es una cámara?")));
+            auto *nIsACamera = new QCheckBox(QString(tr("¿Es una cámara?")), this);
             nIsACamera->setStyleSheet("QCheckBox::checked { color: #e69138; }");
             nIsACamera->setToolTip(
                 tr("%1: Márcalo si en este puerto está instalada una cámara, si sólo es una toma de datos, déjalo desmarcado.")
