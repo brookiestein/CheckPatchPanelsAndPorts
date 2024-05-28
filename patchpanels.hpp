@@ -2,6 +2,7 @@
 #define PATCHPANELS_HPP
 
 #include <map>
+#include <QCheckBox>
 #include <QCloseEvent>
 #include <QGridLayout>
 #include <QTabWidget>
@@ -17,10 +18,11 @@ class PatchPanels : public QTabWidget
 {
     Q_OBJECT
     Ui::PatchPanels *ui;
-    QString m_name;
+    QString m_filename;
     std::vector<QGridLayout *> m_layouts;
     std::map<int, int> m_portsPerPatchPanel;
     std::vector<std::map<int, bool>> m_verifiedPorts;
+    std::map<QCheckBox *, QCheckBox *> m_checkBoxesPerLine;
 
     void writeSpreadSheet();
 public:
@@ -32,6 +34,7 @@ signals:
     void closed();
 private slots:
     void onConfirmButtonClicked();
+    void onCheckBoxClicked();
 };
 
 #endif // PATCHPANELS_HPP
