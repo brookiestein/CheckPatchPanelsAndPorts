@@ -12,6 +12,8 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    ui->patchPanelsEdit->setPlaceholderText(tr("Número"));
+
     connect(ui->patchPanelsEdit, &QLineEdit::returnPressed, this, &MainWindow::onReturnReleased);
     connect(ui->continueBotton, &QPushButton::clicked, this, &MainWindow::onContinueBottonClicked);
 }

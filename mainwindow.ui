@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Patch Panels</string>
+   <string>Verificar Puertos de Patch Panels</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
@@ -66,6 +66,9 @@
            <font>
             <pointsize>12</pointsize>
            </font>
+          </property>
+          <property name="inputMethodHints">
+           <set>Qt::InputMethodHint::ImhDigitsOnly</set>
           </property>
          </widget>
         </item>
