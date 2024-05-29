@@ -1,12 +1,17 @@
 cmake_minimum_required(VERSION 3.5)
 
-set(PROJECT_VERSION 1.0.1)
+set(PROJECT_VERSION 1.0.2)
 project(CheckPatchPanelAndPorts VERSION ${PROJECT_VERSION} LANGUAGES CXX)
 
 add_compile_definitions(AUTHOR="Brayan M. Salazar")
 add_compile_definitions(VERSION="${PROJECT_VERSION}")
 add_compile_definitions(
-    LIBXLSXWRITER_LICENSE="https://github.com/brookiestein/CheckPatchPanelsAndPorts/blob/main/libxlsxwriter-License.txt"
+    LICENSE="https://github.com/brookiestein/CheckPatchPanelsAndPorts/blob/main/LICENSE"
+)
+add_compile_definitions(QT_MAIN_PAGE="https://qt.io")
+add_compile_definitions(LIBXLSXWRITER_REPO="https://github.com/jmcnamara/libxlsxwriter")
+add_compile_definitions(
+    LIBXLSXWRITER_LICENSE="https://github.com/jmcnamara/libxlsxwriter/blob/main/License.txt"
 )
 
 set(CMAKE_AUTOUIC ON)

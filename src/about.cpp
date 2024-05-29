@@ -23,16 +23,17 @@ void About::about(bool triggered)
   <body>\
     <p>\
     <b>Autor:</b> %1<br>\
-    <b>Versión:</b> %2<br><br>\
+    <b>Versión:</b> %2<br>\
+    <a href='%3'><b>Licencia</b></a><br><br>\
     <b>Bibliotecas Usadas:</b>\
     <ol>\
-        <li>Qt6</li>\
-        <li>libxlsxwriter</li>\
+        <li><a href='%4'>Qt6</a></li>\
+        <li><a href='%5'>libxlsxwriter</a></li>\
     </ol>\
-    <a href='%3'>Licencia de libxlsxwriter:</a></p>\
+    <a href='%6'>Licencia de libxlsxwriter</a></p>\
   </body>\
 </html>\
-").arg(AUTHOR, VERSION, LIBXLSXWRITER_LICENSE);
+").arg(AUTHOR, VERSION, LICENSE, QT_MAIN_PAGE, LIBXLSXWRITER_REPO, LIBXLSXWRITER_LICENSE);
 
     QMessageBox msg(m_parent);
     msg.setWindowTitle(tr("Acerca de"));
