@@ -4,6 +4,7 @@
 
 #include "mainwindow.hpp"
 #include "./ui_mainwindow.h"
+#include "about.hpp"
 #include "patchpanels.hpp"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -14,6 +15,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->patchPanelsEdit->setPlaceholderText(tr("Número"));
 
+    auto *about = new About(this);
+
+    connect(ui->actionAboutQt, &QAction::triggered, about, &About::aboutQt);
+    connect(ui->actionAbout, &QAction::triggered, about, &About::about);
     connect(ui->patchPanelsEdit, &QLineEdit::returnPressed, this, &MainWindow::onReturnReleased);
     connect(ui->continueBotton, &QPushButton::clicked, this, &MainWindow::onContinueBottonClicked);
 }

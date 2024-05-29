@@ -1,6 +1,13 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(CheckPatchPanelAndPorts VERSION 1.0 LANGUAGES CXX)
+set(PROJECT_VERSION 1.0)
+project(CheckPatchPanelAndPorts VERSION ${PROJECT_VERSION} LANGUAGES CXX)
+
+add_compile_definitions(AUTHOR="Brayan M. Salazar")
+add_compile_definitions(VERSION=${PROJECT_VERSION})
+add_compile_definitions(
+    LIBXLSXWRITER_LICENSE="https://github.com/brookiestein/CheckPatchPanelsAndPorts/blob/main/libxlsxwriter-License.txt"
+)
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
@@ -16,6 +23,8 @@ pkg_check_modules(Xlsxwriter REQUIRED IMPORTED_TARGET xlsxwriter)
 
 set(PROJECT_SOURCES
     main.cpp
+    about.hpp
+    about.cpp
     mainwindow.hpp
     mainwindow.cpp
     mainwindow.ui
