@@ -22,9 +22,9 @@ void About::about(bool triggered)
 <html>\
   <body>\
     <p>\
-    <b>Autor:<b> %1<br>\
-    <b>Versión:<b> %2<br><br>\
-    <b>Bibliotecas Usadas:<b>\
+    <b>Autor:</b> %1<br>\
+    <b>Versión:</b> %2<br><br>\
+    <b>Bibliotecas Usadas:</b>\
     <ol>\
         <li>Qt6</li>\
         <li>libxlsxwriter</li>\
@@ -32,7 +32,7 @@ void About::about(bool triggered)
     <a href='%3'>Licencia de libxlsxwriter:</a></p>\
   </body>\
 </html>\
-").arg(AUTHOR, QString::number(VERSION, 'f', 1), LIBXLSXWRITER_LICENSE);
+").arg(AUTHOR, VERSION, LIBXLSXWRITER_LICENSE);
 
     QMessageBox msg(m_parent);
     msg.setWindowTitle(tr("Acerca de"));
