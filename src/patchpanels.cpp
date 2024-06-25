@@ -112,9 +112,10 @@ void PatchPanels::writeSpreadSheet()
 
         ++row;
         for (int i {}; i < layout->count(); ++i) {
-            auto port = qobject_cast<QCheckBox *>(layout->itemAt(i)->widget())->text();
+            auto port = qobject_cast<QCheckBox *>(layout->itemAt(i)->widget());
+            auto portText = port->text();
             /* Check starting on the left-most widget. */
-            if (not port.contains(tr("Puerto"))) {
+            if (not portText.contains(tr("Puerto"))) {
                 continue;
             }
 
@@ -123,10 +124,10 @@ void PatchPanels::writeSpreadSheet()
 
             /* First check if port number is >= 10, i.e, has two numbers. */
             bool ok {};
-            int portNumber = port.mid(port.size() - 2, port.size()).toInt(&ok);
+            int portNumber = portText.mid(portText.size() - 2, portText.size()).toInt(&ok);
 
             if (not ok) {
-                portNumber = port.mid(port.size() - 1, 1).toInt();
+                portNumber = portText.mid(portText.size() - 1, 1).toInt();
             }
 
             lxw_format *color = workbook_add_format(workbook);
@@ -136,11 +137,14 @@ void PatchPanels::writeSpreadSheet()
                 rgb = LXW_COLOR_CYAN;
             } else if (isACamera) {
                 rgb = ORANGE;
-            } else {
+            } else if (port->isChecked()) {
                 rgb = GREEN;
+            } else { /* Leave it with the default background color if this port isn't used. */
+                rgb = LXW_COLOR_WHITE;
             }
 
             format_set_bg_color(color, rgb);
+            format_set_border(color, LXW_BORDER_THIN);
 
             worksheet_write_number(worksheet, row, column, portNumber, color);
             ++row;
@@ -159,9 +163,15 @@ void PatchPanels::writeSpreadSheet()
     format_set_bold(data);
     format_set_bold(ap);
     format_set_bold(camera);
+
     format_set_bg_color(data, GREEN);
     format_set_bg_color(ap, LXW_COLOR_CYAN);
     format_set_bg_color(camera, ORANGE);
+
+    format_set_border(legend_fmt, LXW_BORDER_THIN);
+    format_set_border(data, LXW_BORDER_THIN);
+    format_set_border(ap, LXW_BORDER_THIN);
+    format_set_border(camera, LXW_BORDER_THIN);
 
     row = 0;
     column += 2;
@@ -180,6 +190,10 @@ void PatchPanels::writeSpreadSheet()
     ++row;
     legend = tr("Cámara").toStdString();
     worksheet_write_string(worksheet, row, column, legend.c_str(), camera);
+
+    ++row;
+    legend = tr("No usado").toStdString();
+    worksheet_write_string(worksheet, row, column, legend.c_str(), legend_fmt);
 
     auto result = workbook_close(workbook);
 
@@ -236,8 +250,6 @@ void PatchPanels::onConfirmButtonClicked()
         if (reply == QMessageBox::No) {
             return;
         }
-
-        writeSpreadSheet();
     } else {
         auto message = q == 1 ? tr("El siguiente puerto no está verificado: ")
                               : tr("Los siguientes puertos no están verificados: ");
@@ -248,8 +260,15 @@ void PatchPanels::onConfirmButtonClicked()
             }
         }
 
-        QMessageBox::warning(this, tr("Advertencia"), message);
+        auto response = QMessageBox::question(this,
+                                              tr("¿Continuar?"),
+                                              tr("%1\n¿Quieres continuar?").arg(message));
+        if (response != QMessageBox::Yes) {
+            return;
+        }
     }
+
+    writeSpreadSheet();
 }
 
 void PatchPanels::onCheckBoxClicked()

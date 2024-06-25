@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-set(PROJECT_VERSION 1.0.2)
+set(PROJECT_VERSION 1.0.3)
 project(CheckPatchPanelAndPorts VERSION ${PROJECT_VERSION} LANGUAGES CXX)
 
 add_compile_definitions(AUTHOR="Brayan M. Salazar")
