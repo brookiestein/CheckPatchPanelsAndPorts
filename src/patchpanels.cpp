@@ -14,6 +14,7 @@ PatchPanels::PatchPanels(QString name, std::map<int, int> portsPerPatchPanel, QW
     : QTabWidget(parent)
     , ui(new Ui::PatchPanels)
     , m_portsPerPatchPanel(portsPerPatchPanel)
+    , m_verified(true) /* If user wants to close without verifying anything. */
 {
     ui->setupUi(this);
 
@@ -62,6 +63,7 @@ PatchPanels::PatchPanels(QString name, std::map<int, int> portsPerPatchPanel, QW
 
             m_checkBoxesPerLine[nIsAnAP] = nIsACamera;
 
+            connect(nPort, &QCheckBox::clicked, this, &PatchPanels::onPortClicked);
             connect(nIsAnAP, &QCheckBox::clicked, this, &PatchPanels::onCheckBoxClicked);
             connect(nIsACamera, &QCheckBox::clicked, this, &PatchPanels::onCheckBoxClicked);
 
@@ -206,6 +208,16 @@ void PatchPanels::writeSpreadSheet()
 
 void PatchPanels::closeEvent(QCloseEvent *event)
 {
+    if (not m_verified) {
+        auto reply = QMessageBox::question(this,
+                tr("Confirmación"),
+                tr("Aún hay cambios sin guardar, ¿Seguro de que quieres salir?"));
+        if (reply == QMessageBox::No) {
+            event->ignore();
+            return;
+        }
+    }
+
     emit closed();
     QWidget::closeEvent(event);
 }
@@ -237,6 +249,7 @@ void PatchPanels::onConfirmButtonClicked()
     }
 
     if (ok) {
+        m_verified = true;
         QMessageBox::information(this,
                                  tr("Confirmado"),
                                  tr("Todos los puertos están verificados.")
@@ -251,6 +264,7 @@ void PatchPanels::onConfirmButtonClicked()
             return;
         }
     } else {
+        m_verified = false;
         auto message = q == 1 ? tr("El siguiente puerto no está verificado: ")
                               : tr("Los siguientes puertos no están verificados: ");
 
@@ -269,6 +283,11 @@ void PatchPanels::onConfirmButtonClicked()
     }
 
     writeSpreadSheet();
+}
+
+void PatchPanels::onPortClicked()
+{
+    m_verified = false;
 }
 
 void PatchPanels::onCheckBoxClicked()

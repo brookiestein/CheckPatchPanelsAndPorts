@@ -23,6 +23,7 @@ class PatchPanels : public QTabWidget
     std::map<int, int> m_portsPerPatchPanel;
     std::vector<std::map<int, bool>> m_verifiedPorts;
     std::map<QCheckBox *, QCheckBox *> m_checkBoxesPerLine;
+    bool m_verified;
 
     void writeSpreadSheet();
 public:
@@ -33,6 +34,7 @@ protected:
 signals:
     void closed();
 private slots:
+    void onPortClicked();
     void onConfirmButtonClicked();
     void onCheckBoxClicked();
 };
