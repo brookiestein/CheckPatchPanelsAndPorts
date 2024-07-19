@@ -103,6 +103,10 @@ void PatchPanels::writeSpreadSheet()
     const auto GREEN = 0x00ff00;
     const auto ORANGE = 0xe69138;
 
+    quint8 accessPoints {};
+    quint8 cameras {};
+    quint16 lan {};
+    int maxRow {};
     int row {};
     int column {};
     int nPatchPanel {1};
@@ -137,10 +141,13 @@ void PatchPanels::writeSpreadSheet()
 
             if (isAnAP) {
                 rgb = LXW_COLOR_CYAN;
+                ++accessPoints;
             } else if (isACamera) {
                 rgb = ORANGE;
+                ++cameras;
             } else if (port->isChecked()) {
                 rgb = GREEN;
+                ++lan;
             } else { /* Leave it with the default background color if this port isn't used. */
                 rgb = LXW_COLOR_WHITE;
             }
@@ -150,6 +157,10 @@ void PatchPanels::writeSpreadSheet()
 
             worksheet_write_number(worksheet, row, column, portNumber, color);
             ++row;
+        }
+
+        if (maxRow < row) {
+            maxRow = row;
         }
 
         ++nPatchPanel;
@@ -184,18 +195,49 @@ void PatchPanels::writeSpreadSheet()
     legend = tr("Toma de datos").toStdString();
     worksheet_set_column(worksheet, column, column, legend.length(), nullptr);
     worksheet_write_string(worksheet, row, column, legend.c_str(), data);
+    worksheet_write_number(worksheet, row, column + 1, lan, nullptr);
 
     ++row;
     legend = tr("AP").toStdString();
     worksheet_write_string(worksheet, row, column, legend.c_str(), ap);
+    worksheet_write_number(worksheet, row, column + 1, accessPoints, nullptr);
 
     ++row;
     legend = tr("Cámara").toStdString();
     worksheet_write_string(worksheet, row, column, legend.c_str(), camera);
+    worksheet_write_number(worksheet, row, column + 1, cameras, nullptr);
 
     ++row;
     legend = tr("No usado").toStdString();
     worksheet_write_string(worksheet, row, column, legend.c_str(), legend_fmt);
+
+    auto legendsCell = QString(static_cast<char>('A' - 1 + (column + 1)));
+    auto valuesCell = QString(static_cast<char>('A' - 1 + (column + 2)));
+
+    auto categories = QString("$%1$2:$%2$4").arg(legendsCell, legendsCell).toStdString();
+    auto values = QString("$%1$2:$%2$4").arg(valuesCell, valuesCell).toStdString();
+
+    lxw_chart *chart = workbook_add_chart(workbook, LXW_CHART_PIE);
+    lxw_chart_series *series = chart_add_series(chart, categories.c_str(), values.c_str());
+
+    lxw_chart_fill greenFill = { .color = GREEN };
+    lxw_chart_fill cyanFill = { .color = LXW_COLOR_CYAN };
+    lxw_chart_fill orangeFill = { .color = LXW_COLOR_ORANGE };
+
+    lxw_chart_point greenPoint = { .fill = &greenFill };
+    lxw_chart_point cyanPoint = { .fill = &cyanFill };
+    lxw_chart_point orangePoint = { .fill = &orangeFill };
+
+    lxw_chart_point *points[] = {
+        &greenPoint,
+        &cyanPoint,
+        &orangePoint,
+        nullptr
+    };
+
+    chart_series_set_points(series, points);
+
+    worksheet_insert_chart(worksheet, row + 2, column, chart);
 
     auto result = workbook_close(workbook);
 

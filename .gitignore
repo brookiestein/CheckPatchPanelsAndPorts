@@ -33,3 +33,6 @@
 
 # build directory
 build
+
+# QtCreator user config.
+CMakeLists.txt.user
